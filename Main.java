@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import oop.family_tree.family_tree.FamilyTree;
-import oop.family_tree.family_tree.FileOperations;
+import oop.family_tree.family_tree.servise.FileOperations;
 import oop.family_tree.human.Gender;
 import oop.family_tree.human.Human;
 
@@ -62,6 +62,22 @@ public class Main {
         // Вывод списка людей в древе
         List<Human> peoples = familyTree.getPeople();
         for (Human people : peoples) {
+            System.out.println(people.getName() + " родился(ась) в " + people.getBirthDate().getYear() + " году");
+        }
+        System.out.println("================================ ");
+
+        // Сортируем по имени
+        System.out.println("Сортировка по имени:");
+        familyTree.sortByName();
+        for (Human people : familyTree) {
+            System.out.println(people.getName() + " родился(ась) в " + people.getBirthDate().getYear() + " году");
+        }
+        System.out.println("================================ ");
+
+        // Сортируем по дате рождения
+        System.out.println("\nСортировка по дате рождения:");
+        familyTree.sortByBirthYear();
+        for (Human people : familyTree) {
             System.out.println(people.getName() + " родился(ась) в " + people.getBirthDate().getYear() + " году");
         }
         System.out.println("================================ ");
