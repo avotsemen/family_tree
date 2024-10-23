@@ -1,11 +1,14 @@
 package oop.family_tree.family_tree;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import oop.family_tree.human.Human;
 
-public class FamilyTree {
+public class FamilyTree implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
 
     private List<Human> people;
 
@@ -19,6 +22,10 @@ public class FamilyTree {
 
     public List<Human> getChildren(Human parent) {
         return parent.getChildren();
+    }
+
+    public List<Human> getPeople() {
+        return people;
     }
 
     public Human findPersonByName(String name) {
