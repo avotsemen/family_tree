@@ -1,23 +1,25 @@
 package oop.family_tree.human;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Human {
+public class Human implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String name;
     private Gender gender;
-    private int birthDate;
-    private int deathDate;
+    private LocalDate birthDate;
+    private LocalDate deathDate;
     private Human mather;
     private Human father;
     private Human spouse;
     private List<Human> children;
 
-    public Human(String name, Gender gender, int birthDate,
-            int deathDate, Human mather, Human father, Human spouse) {
+    public Human(String name, Gender gender, LocalDate birthDate,
+            LocalDate deathDate, Human mather, Human father, Human spouse) {
         this.name = name;
         this.gender = gender;
         this.birthDate = birthDate;
@@ -28,37 +30,12 @@ public class Human {
         children = new ArrayList<>();
     }
 
-    public Human(String name, Gender gender, int birthDate) {
-        this(name, gender, birthDate, 0, null, null, null);
+    public Human(String name, Gender gender, LocalDate birthDate) {
+        this(name, gender, birthDate, null, null, null, null);
     }
-    public Human(String name, Gender gender, int birthDate, int deathDate) {
+
+    public Human(String name, Gender gender, LocalDate birthDate, LocalDate deathDate) {
         this(name, gender, birthDate, deathDate, null, null, null);
-    }
-
-    public static Human addHuman() {
-        Gender gender = null;
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите имя человека: ");
-        String name = scanner.nextLine();
-        System.out.println("Выберите пол:");
-        System.out.println("1. Мужской");
-        System.out.println("2. Женский");
-        String genderString = scanner.nextLine();
-        if (Objects.equals("1", genderString)) {
-            gender = Gender.Male;
-        } else if (Objects.equals("2", genderString)) {
-            gender = Gender.Female;
-        } else {
-            System.out.println("Некорректный ввод! Пол по умолчанию 'Мужской'");
-            gender = Gender.Male;
-        }
-
-        System.out.print("Год рождения: ");
-        int bd = scanner.nextInt();
-        System.out.print("Год смерти (укажите 0, если человек жив): ");
-        int dy = scanner.nextInt();
-        Human human = new Human(name, gender, bd, dy);
-        return human;
     }
 
     public String getName() {
@@ -75,6 +52,14 @@ public class Human {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public LocalDate getDeathDate() {
+        return deathDate;
     }
 
     public Human getMather() {
@@ -117,22 +102,27 @@ public class Human {
         System.out.println("Имя: " + name);
         System.out.println("Пол: " + gender);
         System.out.println("Возраст: " + getAge(birthDate, deathDate));
-        if (mather != null) {
-            System.out.print("Родители: " + mather.getName());
-        }
-        if (father != null) {
-            System.out.println(" " + father.getName());
+
+        if (mather != null || father != null) {
+            System.out.print("Родители: ");
+            if (mather != null) {
+                System.out.printf(mather.getName() + " ");
+            }
+            if (father != null) {
+                System.out.println(father.getName());
+            }
         }
         if (spouse != null) {
             System.out.println("Супруг: " + spouse.getName());
         }
-        if (children != null) {
+        if (children.size() > 0) {
             System.out.printf("Дети: ");
             for (Human child : children) {
                 System.out.printf(child.getName() + " ");
             }
             System.out.println();
         }
+        System.out.println("================================ ");
 
         // return "Имя: " + name + "\n" +
         // "Пол: " + gender + "\n" +
@@ -143,12 +133,12 @@ public class Human {
 
     }
 
-    public int getAge(int birthDate, int deathDate) {
-        if (deathDate == 0) {
+    public int getAge(LocalDate birthDate, LocalDate deathDate) {
+        if (deathDate == null) {
             LocalDate currentDate = LocalDate.now();
-            return currentDate.getYear() - birthDate;
+            return currentDate.getYear() - birthDate.getYear();
         } else {
-            return deathDate - birthDate;
+            return deathDate.getYear() - birthDate.getYear();
         }
     }
 
